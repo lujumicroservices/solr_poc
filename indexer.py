@@ -2,8 +2,11 @@ import requests
 import json
 import sys
 import pickle
-
+import os
+import shutil
 import concurrent.futures
+import random
+
 
 from adversary_generator import AdversaryGenerator
 from attachments_generator import AttachmentGenerator
@@ -148,12 +151,58 @@ def att_worker():
 
 
 def load_indi():
-    # Load data from pickle file
-    pickle_filename = 'indicator_2023-08-23_15-00-27.pk1'
-    with open(pickle_filename, 'rb') as pickle_file:
-        loaded_data = pickle.load(pickle_file)
+    source_folder = "E:\solr_data"
+    destination_folder = "E:\solr_data_process"
 
-    index_documents_in_batches(solr_url,collection, loaded_data)
+    if not os.path.exists(destination_folder):
+        os.makedirs(destination_folder)
+
+    findfile = True
+    
+    
+
+       
+    while findfile:
+
+        findfile = False
+        file_list = os.listdir(source_folder)
+        random.shuffle(file_list)
+
+
+    for filename in file_list:
+        file_path = os.path.join(source_folder, filename)
+        if os.path.isfile(file_path) and filename.endswith(".pk1"):                
+            
+            if not is_file_in_use(file_path):
+                findfile = True
+                with open(file_path, 'rb') as pickle_file:
+                    loaded_data = pickle.load(pickle_file)
+
+                index_documents_in_batches(solr_url,collection, loaded_data)
+
+                print(f"Processing file: {file_path}")
+                # Move the file to the destination folder
+                shutil.move(file_path, os.path.join(destination_folder, os.path.basename(file_path)))
+                print(f"Moved file to destination folder")
+
+
+
+def is_file_in_use(file_path):
+    try:
+        # Check if the file is open
+        with open(file_path, "r"):
+            pass
+    except IOError:
+        print(f"The file '{file_path}' is in use.")
+        return True
+    except PermissionError:
+        print(f"Permission error for file '{file_path}'.")
+        return True
+    else:
+        print(f"The file '{file_path}' is not in use.")
+        return False
+
+
 
 
 iterator_num_documents = 100000
@@ -173,7 +222,7 @@ num_documents = 1000000
 # wait for all tasks to complete
 #pool.shutdown(wait=True)
  
-sys.argv.append("2")
+sys.argv.append("6")
 sys.argv.append("0")
 
 
