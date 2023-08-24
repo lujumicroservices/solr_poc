@@ -1,0 +1,7 @@
+{
+  "replace-field": {
+    "name": "doc_id",
+    "type": "string",
+    "uniqueKey": true
+  }
+}

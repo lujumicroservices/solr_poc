@@ -1,0 +1,60 @@
+!join method="crossCollection" fromIndex="threat_library" from="object_link_src_doc_id" to="doc_id" v="*:*"
+
+
+curl --location --request GET 'http://localhost:8983/solr/threat_library_current/query' \
+--header 'Content-Type: application/json' \
+--data '{
+    "query": "doc_type:indicator AND ({!join from=object_link_src_doc_id to=doc_id method=crossCollection fromIndex=threat_library score=none}doc_type:indicator OR 
+(doc_type:object_link AND object_link_src_object_type_name:indicator AND object_link_dest_object_type_name:adversary))",
+    "sort": "indicator_created_at desc",
+    "offset": 0,
+    "limit": 25
+    "fields": "*",
+    "params": {
+        "debugQuery": true        
+    }
+}'
+
+
+curl --location --request GET 'http://localhost:8983/solr/threat_library_current/query' \
+--header 'Content-Type: application/json' \
+--data '{
+    "query": "doc_type:indicator",
+    "offset": 0,
+    "limit": 25
+    "fields": "*"
+}'
+
+
+
+
+curl --location --request GET 'http://localhost:8983/solr/threat_library/query' \
+--header 'Content-Type: application/json' \
+--data '{
+    "query": "doc_type:indicator AND ({!join from=object_link_src_doc_id to=doc_id method=crossCollection fromIndex=threat_library_current v=$pd18ffef97d score=none })",
+    "sort": "indicator_created_at desc",
+    "offset": 0,
+    "limit": 25,
+    "fields": "id:indicator_id,*,indicator_score,sources,id:indicator_id,type_id:indicator_type_id,status_id:indicator_status_id,hash:indicator_hash,value:indicator_value,last_detected_at:indicator_last_detected_at,expired_at:indicator_expired_at,created_at:indicator_created_at,updated_at:indicator_updated_at,description:indicator_description,expires_at:indicator_expires_at,manual_score:indicator_manual_score,generated_score:indicator_generated_score,score:indicator_score,touched_at:indicator_touched_at,published_at:indicator_published_at,type_name:indicator_type_name,status_name:indicator_status_name,import_ids:indicator_import_ids,id:source_id,source_id:source_source_id,name:source_name,type:source_type,creator_source_id:source_creator_source_id,creator_source_name:source_creator_source_name,creator_source_type:source_creator_source_type,tlp_id:source_tlp_id,tlp_name:source_tlp_name,tlp_none:source_tlp_none,created_at:source_created_at,updated_at:source_updated_at,published_at:source_published_at,[child childFilter=\"doc_type:source AND (/sources/*:*)\" fl=id:source_id,source_id:source_source_id,name:source_name,type:source_type,creator_source_id:source_creator_source_id,creator_source_name:source_creator_source_name,creator_source_type:source_creator_source_type,tlp_id:source_tlp_id,tlp_name:source_tlp_name,tlp_none:source_tlp_none,created_at:source_created_at,updated_at:source_updated_at,published_at:source_published_at limit=1000]",
+    "params": {
+        "debugQuery": true,
+        "p87e1510a75": "adversary_name:*jackal*",
+        "pd18ffef97d": "{!join from=doc_id to=object_link_dest_doc_id method=crossCollection fromIndex=threat_library v=adversary_name:*jackal* score=none}"
+    }
+}'
+
+
+p87e1510a75 = "adversary_name:*jackal*",
+pd18ffef97d = "{!join from=doc_id to=object_link_dest_doc_id method=crossCollection fromIndex=threat_library v=adversary_name:*jackal* score=none}"
+
+id:indicator_id,*,indicator_score,sources,id:indicator_id,type_id:indicator_type_id,status_id:indicator_status_id,hash:indicator_hash,value:indicator_value,last_detected_at:indicator_last_detected_at,expired_at:indicator_expired_at,created_at:indicator_created_at,updated_at:indicator_updated_at,description:indicator_description,expires_at:indicator_expires_at,manual_score:indicator_manual_score,generated_score:indicator_generated_score,score:indicator_score,touched_at:indicator_touched_at,published_at:indicator_published_at,type_name:indicator_type_name,status_name:indicator_status_name,import_ids:indicator_import_ids,id:source_id,source_id:source_source_id,name:source_name,type:source_type,creator_source_id:source_creator_source_id,creator_source_name:source_creator_source_name,creator_source_type:source_creator_source_type,tlp_id:source_tlp_id,tlp_name:source_tlp_name,tlp_none:source_tlp_none,created_at:source_created_at,updated_at:source_updated_at,published_at:source_published_at,[child childFilter=\"doc_type:source AND (/sources/*:*)\" fl=id:source_id,source_id:source_source_id,name:source_name,type:source_type,creator_source_id:source_creator_source_id,creator_source_name:source_creator_source_name,creator_source_type:source_creator_source_type,tlp_id:source_tlp_id,tlp_name:source_tlp_name,tlp_none:source_tlp_none,created_at:source_created_at,updated_at:source_updated_at,published_at:source_published_at limit=1000]
+
+
+
+({!join from=object_link_src_doc_id to=doc_id method=crossCollection fromIndex=threat_library_current v=$p87e1510a75  score=none})
+p87e1510a75=(doc_type:object_link AND object_link_src_object_type_name:indicator AND object_link_dest_object_type_name:adversary) AND {!join from=doc_id to=object_link_dest_doc_id method=crossCollection fromIndex=threat_library_current v=adversary_name:*jackal* score=none}
+
+
+
+
+Invoke-RestMethod -Uri "http://localhost:8983/solr/admin/collections?action=SPLITSHARD&collection=threat_library_current&shard=shard1&wt=xml" -Method GET

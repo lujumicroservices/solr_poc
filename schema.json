@@ -1,0 +1,477 @@
+{
+  "replace-field-type": {
+    "name": "binary",
+    "class": "solr.BinaryField",
+    "stored": false,
+    "docValues": true
+  },
+  "replace-field-type": {
+    "name": "boolean",
+    "class": "solr.BoolField",
+    "stored": false,
+    "sortMissingLast": true,
+    "docValues": true
+  },
+  "replace-field-type": {
+    "name": "booleans",
+    "class": "solr.BoolField",
+    "stored": false,
+    "sortMissingLast": true,
+    "docValues": true,
+    "multiValued": true
+  },
+  "add-field-type": {
+    "name": "comma_delimited_ci",
+    "class": "solr.TextField",
+    "multiValued": true,
+    "analyzer": {
+      "tokenizer": {
+        "class": "solr.PatternTokenizerFactory",
+        "pattern": ",\\s*"
+      },
+      "filters": [
+        {
+          "class": "solr.LowerCaseFilterFactory"
+        }
+      ]
+    }
+  },
+  "replace-field-type": {
+    "name": "ignored",
+    "class": "solr.StrField",
+    "indexed": false,
+    "stored": false
+  },
+  "replace-field-type": {
+    "name": "location",
+    "class": "solr.LatLonPointSpatialField",
+    "stored": false,
+    "docValues": true
+  },
+  "replace-field-type": {
+    "name": "lowercase",
+    "class": "solr.TextField",
+    "positionIncrementGap": "100",
+    "analyzer": {
+      "tokenizer": {
+        "class": "solr.KeywordTokenizerFactory"
+      },
+      "filters": [
+        {
+          "class": "solr.LengthFilterFactory",
+          "min": "1",
+          "max": "32766"
+        },
+        {
+          "class": "solr.LowerCaseFilterFactory"
+        }
+      ]
+    }
+  },
+  "add-field-type": {
+    "name": "nest_path",
+    "class": "solr.NestPathField",
+    "omitTermFreqAndPositions": true,
+    "omitNorms": true,
+    "maxCharsForDocValues": "-1",
+    "stored": false,
+    "multiValued": false
+  },
+  "replace-field-type": {
+    "name": "pdate",
+    "class": "solr.DatePointField",
+    "stored": false,
+    "docValues": true
+  },
+  "replace-field-type": {
+    "name": "pdates",
+    "class": "solr.DatePointField",
+    "stored": false,
+    "docValues": true,
+    "multiValued": true
+  },
+  "replace-field-type": {
+    "name": "pdouble",
+    "class": "solr.DoublePointField",
+    "stored": false,
+    "docValues": true
+  },
+  "replace-field-type": {
+    "name": "pdoubles",
+    "class": "solr.DoublePointField",
+    "stored": false,
+    "docValues": true,
+    "multiValued": true
+  },
+  "replace-field-type": {
+    "name": "pfloat",
+    "class": "solr.FloatPointField",
+    "stored": false,
+    "docValues": true
+  },
+  "replace-field-type": {
+    "name": "pfloats",
+    "class": "solr.FloatPointField",
+    "stored": false,
+    "docValues": true,
+    "multiValued": true
+  },
+  "replace-field-type": {
+    "name": "pint",
+    "class": "solr.IntPointField",
+    "stored": false,
+    "docValues": true
+  },
+  "replace-field-type": {
+    "name": "pints",
+    "class": "solr.IntPointField",
+    "stored": false,
+    "docValues": true,
+    "multiValued": true
+  },
+  "replace-field-type": {
+    "name": "plong",
+    "class": "solr.LongPointField",
+    "stored": false,
+    "docValues": true
+  },
+  "replace-field-type": {
+    "name": "plongs",
+    "class": "solr.LongPointField",
+    "stored": false,
+    "docValues": true,
+    "multiValued": true
+  },
+  "replace-field-type": {
+    "name": "point",
+    "class": "solr.PointType",
+    "subFieldSuffix": "_d",
+    "stored": false,
+    "docValues": true,
+    "dimension": "2"
+  },
+  "replace-field-type": {
+    "name": "string",
+    "class": "solr.StrField",
+    "stored": false,
+    "sortMissingLast": true,
+    "docValues": true
+  },
+  "replace-field-type": {
+    "name": "strings",
+    "class": "solr.StrField",
+    "stored": false,
+    "sortMissingLast": true,
+    "docValues": true,
+    "multiValued": true
+  },
+  "replace-field-type": {
+    "name": "text_general",
+    "class": "solr.TextField",
+    "positionIncrementGap": "100",
+    "analyzer": {
+      "tokenizer": {
+        "class": "solr.StandardTokenizerFactory"
+      },
+      "filters": [
+        {
+          "class": "solr.LengthFilterFactory",
+          "min": "1",
+          "max": "32766"
+        },
+        {
+          "class": "solr.LowerCaseFilterFactory"
+        }
+      ]
+    }
+  },
+  "add-field-type": {
+    "name": "text_general_cs",
+    "class": "solr.TextField",
+    "positionIncrementGap": "100",
+    "analyzer": {
+      "tokenizer": {
+        "class": "solr.KeywordTokenizerFactory"
+      },
+      "filters": [
+        {
+          "class": "solr.LengthFilterFactory",
+          "min": "1",
+          "max": "32766"
+        }
+      ]
+    }
+  },
+  "add-field-type": {
+    "name": "text_general_html",
+    "class": "solr.TextField",
+    "analyzer": {
+      "charFilters": [
+        {
+          "class": "solr.HTMLStripCharFilterFactory"
+        }
+      ],
+      "tokenizer": {
+        "class": "solr.StandardTokenizerFactory"
+      },
+      "filters": [
+        {
+          "class": "solr.LengthFilterFactory",
+          "min": "1",
+          "max": "32766"
+        },
+        {
+          "class": "solr.LowerCaseFilterFactory"
+        }
+      ]
+    }
+  },
+  "add-field-type": {
+    "name": "text_general_keyword",
+    "class": "solr.TextField",
+    "positionIncrementGap": "100",
+    "analyzer": {
+      "tokenizer": {
+        "class": "solr.KeywordTokenizerFactory"
+      },
+      "filters": [
+        {
+          "class": "solr.LengthFilterFactory",
+          "min": "1",
+          "max": "32766"
+        },
+        {
+          "class": "solr.LowerCaseFilterFactory"
+        }
+      ]
+    }
+  },
+  "replace-field": {
+    "name": "_nest_path_",
+    "type": "nest_path"
+  },
+  "replace-field": {
+    "name": "_root_",
+    "type": "string",
+    "docValues": false
+  },
+  "replace-field": {
+    "name": "_version_",
+    "type": "plong",
+    "indexed": false
+  },
+  "add-field": {
+    "name": "attachment_text",
+    "type": "text_general_html"
+  },
+  "add-field": {
+    "name": "attribute_attribute_id",
+    "type": "pint"
+  },
+  "add-field": {
+    "name": "attribute_id",
+    "type": "plong"
+  },
+  "add-field": {
+    "name": "attribute_name",
+    "type": "lowercase"
+  },
+  "add-field": {
+    "name": "attribute_name_cs",
+    "type": "string",
+    "useDocValuesAsStored": false
+  },
+  "add-field": {
+    "name": "attribute_value",
+    "type": "text_general_keyword"
+  },
+  "add-field": {
+    "name": "attribute_value_cs",
+    "type": "text_general_cs",
+    "useDocValuesAsStored": false
+  },
+  "add-field": {
+    "name": "doc_id",
+    "type": "string"
+  },
+  "add-field": {
+    "name": "doc_type",
+    "type": "string"
+  },
+  "add-field": {
+    "name": "event_spearphish_value",
+    "type": "text_general_html"
+  },
+  "add-field": {
+    "name": "indicator_class",
+    "type": "ignored"
+  },
+  "add-field": {
+    "name": "indicator_expires_calculated_at",
+    "type": "ignored"
+  },
+  "add-field": {
+    "name": "indicator_expires_needs_calc",
+    "type": "ignored"
+  },
+  "add-field": {
+    "name": "object_link_dest_object_type_id",
+    "type": "ignored"
+  },
+  "add-field": {
+    "name": "object_link_dest_object_type_name",
+    "type": "string"
+  },
+  "add-field": {
+    "name": "object_link_src_object_type_id",
+    "type": "ignored"
+  },
+  "add-field": {
+    "name": "object_link_src_object_type_name",
+    "type": "string"
+  },
+  "add-field": {
+    "name": "source_creator_source_id",
+    "type": "pint"
+  },
+  "add-field": {
+    "name": "source_id",
+    "type": "plong"
+  },
+  "add-field": {
+    "name": "source_source_id",
+    "type": "pint"
+  },
+  "add-field": {
+    "name": "source_tlp_name",
+    "type": "string"
+  },
+  "add-field": {
+    "name": "source_tlp_none",
+    "type": "boolean",
+    "indexed": true,
+    "docValues": false
+  },
+  "add-field": {
+    "name": "tags",
+    "type": "comma_delimited_ci"
+  },
+  "add-field": {
+    "name": "task_assignee_source_id",
+    "type": "pint"
+  },
+  "add-field": {
+    "name": "task_creator_source_id",
+    "type": "pint"
+  },
+  "add-field": {
+    "name": "task_priority",
+    "type": "string"
+  },"add-dynamic-field": {
+    "name": "*_status_name_cs",
+    "type": "string",
+    "useDocValuesAsStored": false
+  },
+  "add-dynamic-field": {
+    "name": "*source_name_cs",
+    "type": "string",
+    "useDocValuesAsStored": false
+  },
+  "add-dynamic-field": {
+    "name": "*_type_name_cs",
+    "type": "string",
+    "useDocValuesAsStored": false
+  },
+  "add-dynamic-field": {
+    "name": "*_status_name",
+    "type": "lowercase"
+  },
+  "add-dynamic-field": {
+    "name": "*_description",
+    "type": "text_general_html"
+  },
+  "add-dynamic-field": {
+    "name": "*source_name",
+    "type": "lowercase"
+  },
+  "add-dynamic-field": {
+    "name": "*_type_name",
+    "type": "lowercase"
+  },
+  "add-dynamic-field": {
+    "name": "*_status_id",
+    "type": "pint"
+  },
+  "add-dynamic-field": {
+    "name": "*deleted_at",
+    "type": "ignored"
+  },
+  "add-dynamic-field": {
+    "name": "*sync_hash",
+    "type": "ignored"
+  },
+  "add-dynamic-field": {
+    "name": "*_type_id",
+    "type": "pint"
+  },
+  "add-dynamic-field": {
+    "name": "*doc_ids",
+    "type": "strings"
+  },
+  "add-dynamic-field": {
+    "name": "*doc_id",
+    "type": "string"
+  },
+  "add-dynamic-field": {
+    "name": "*_count",
+    "type": "pint"
+  },
+  "add-dynamic-field": {
+    "name": "*_score",
+    "type": "pfloat"
+  },
+  "add-dynamic-field": {
+    "name": "*_hash",
+    "type": "lowercase"
+  },
+  "add-dynamic-field": {
+    "name": "*_name",
+    "type": "text_general"
+  },
+  "add-dynamic-field": {
+    "name": "*_ids",
+    "type": "plongs"
+  },
+  "add-dynamic-field": {
+    "name": "*_id",
+    "type": "plong"
+  },
+  "add-dynamic-field": {
+    "name": "*_at",
+    "type": "pdate"
+  },
+  "add-dynamic-field": {
+    "name": "*",
+    "type": "lowercase"
+  },
+  "add-copy-field": {
+    "source": "attribute_name",
+    "dest": "attribute_name_cs"
+  },
+  "add-copy-field": {
+    "source": "attribute_value",
+    "dest": "attribute_value_cs"
+  },
+  "add-copy-field": {
+    "source": "*source_name",
+    "dest": "*source_name_cs"
+  },
+  "add-copy-field": {
+    "source": "*_type_name",
+    "dest": "*_type_name_cs"
+  },
+  "add-copy-field": {
+    "source": "*_status_name",
+    "dest": "*_status_name_cs"
+  }
+}

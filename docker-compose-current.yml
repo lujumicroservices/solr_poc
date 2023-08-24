@@ -1,0 +1,233 @@
+version: '2.18.1'
+services:
+  solr1:
+    image: solr:9.0
+    container_name: solr1
+    ports:
+      - "8981:8983"
+    environment:
+      - SOLR_JAVA_MEM=-Xms1g -Xmx1g
+      - ZK_HOST=zoo1:2181,zoo2:2181,zoo3:2181      
+    networks:
+      - solr_network
+    depends_on:
+      - zoo1
+      - zoo2
+      - zoo3
+    volumes:
+      - ./data/managed-schema:/opt/solr/server/solr/configsets/_default/conf/managed-schema.xml
+      - ./data/solrconfig.xml:/opt/solr/server/solr/configsets/_default/conf/solrconfig.xml
+      - current-data-solr1:/var/solr
+      
+    cap_add:
+      - NET_ADMIN
+     
+  solr2:
+    image: solr:9.0
+    container_name: solr2
+    ports:
+      - "8982:8983"
+    environment:
+      - SOLR_JAVA_MEM=-Xms1g -Xmx1g
+      - ZK_HOST=zoo1:2181,zoo2:2181,zoo3:2181      
+    networks:
+      - solr_network
+    depends_on:
+      - zoo1
+      - zoo2
+      - zoo3
+    volumes:
+      - ./data/managed-schema:/opt/solr/server/solr/configsets/_default/conf/managed-schema.xml
+      - ./data/solrconfig.xml:/opt/solr/server/solr/configsets/_default/conf/solrconfig.xml
+      - current-data-solr2:/var/solr
+    cap_add:
+      - NET_ADMIN
+    
+  
+  solr3:
+    image: solr:9.0
+    container_name: solr3
+    ports:
+      - "8983:8983"
+    environment:
+      - SOLR_JAVA_MEM=-Xms1g -Xmx1g
+      - ZK_HOST=zoo1:2181,zoo2:2181,zoo3:2181      
+    networks:
+      - solr_network
+    depends_on:
+      - zoo1
+      - zoo2
+      - zoo3
+    volumes:
+      - ./data/managed-schema:/opt/solr/server/solr/configsets/_default/conf/managed-schema.xml
+      - ./data/solrconfig.xml:/opt/solr/server/solr/configsets/_default/conf/solrconfig.xml
+      - current-data-solr3:/var/solr
+    cap_add:
+      - NET_ADMIN
+    
+  
+  zoo1:
+    image: zookeeper:3.8
+    container_name: zoo1
+    restart: always
+    hostname: zoo1
+    ports:
+      - 2181:2181
+      - 7001:7000
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=zoo1:2888:3888;2181 server.2=zoo2:2888:3888;2181 server.3=zoo3:2888:3888;2181
+      ZOO_4LW_COMMANDS_WHITELIST: mntr, conf, ruok
+      ZOO_CFG_EXTRA: "metricsProvider.className=org.apache.zookeeper.metrics.prometheus.PrometheusMetricsProvider metricsProvider.httpPort=7000 metricsProvider.exportJvmInfo=true"
+    networks:
+      - solr_network
+    volumes:      
+      - current-data-zoo1-data:/data
+      - current-data-zoo1-datalog:/datalog
+      - current-data-zoo1-log:/log
+      - current-data-zoo1-logs:/logs
+   
+
+  zoo2:
+    image: zookeeper:3.8
+    container_name: zoo2
+    restart: always
+    hostname: zoo2
+    ports:
+      - 2182:2181
+      - 7002:7000
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=zoo1:2888:3888;2181 server.2=zoo2:2888:3888;2181 server.3=zoo3:2888:3888;2181
+      ZOO_4LW_COMMANDS_WHITELIST: mntr, conf, ruok
+      ZOO_CFG_EXTRA: "metricsProvider.className=org.apache.zookeeper.metrics.prometheus.PrometheusMetricsProvider metricsProvider.httpPort=7000 metricsProvider.exportJvmInfo=true"
+    networks:
+      - solr_network
+    volumes:      
+      - current-data-zoo2-data:/data
+      - current-data-zoo2-datalog:/datalog
+      - current-data-zoo2-log:/log
+      - current-data-zoo2-logs:/logs
+   
+    
+
+  zoo3:
+    image: zookeeper:3.8
+    container_name: zoo3
+    restart: always
+    hostname: zoo3
+    ports:
+      - 2183:2181
+      - 7003:7000
+    environment:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1=zoo1:2888:3888;2181 server.2=zoo2:2888:3888;2181 server.3=zoo3:2888:3888;2181
+      ZOO_4LW_COMMANDS_WHITELIST: mntr, conf, ruok
+      ZOO_CFG_EXTRA: "metricsProvider.className=org.apache.zookeeper.metrics.prometheus.PrometheusMetricsProvider metricsProvider.httpPort=7000 metricsProvider.exportJvmInfo=true"
+    networks:
+      - solr_network
+    volumes:      
+      - current-data-zoo3-data:/data
+      - current-data-zoo3-datalog:/datalog
+      - current-data-zoo3-log:/log
+      - current-data-zoo3-logs:/logs
+   
+    
+
+networks:
+  solr_network:
+    external: true
+    
+volumes:
+  current-data-solr1:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ~/e_drive/current-data-solr1
+  current-data-solr2:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ~/e_drive/current-data-solr2
+  current-data-solr3:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ~/e_drive/current-data-solr3  
+  current-data-zoo1-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ~/e_drive/current-data-zoo1-data
+  current-data-zoo1-datalog:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ~/e_drive/current-data-zoo1-datalog
+  current-data-zoo1-log:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ~/e_drive/current-data-zoo1-log
+  current-data-zoo1-logs:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ~/e_drive/current-data-zoo1-logs
+  current-data-zoo2-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ~/e_drive/current-data-zoo2-data
+  current-data-zoo2-datalog:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ~/e_drive/current-data-zoo2-datalog
+  current-data-zoo2-log:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ~/e_drive/current-data-zoo2-log
+  current-data-zoo2-logs:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ~/e_drive/current-data-zoo2-logs
+  current-data-zoo3-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ~/e_drive/current-data-zoo3-data
+  current-data-zoo3-datalog:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ~/e_drive/current-data-zoo3-datalog
+  current-data-zoo3-log:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ~/e_drive/current-data-zoo3-log
+  current-data-zoo3-logs:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ~/e_drive/current-data-zoo3-logs
+      
+  
